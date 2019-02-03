@@ -1,0 +1,31 @@
+.main-header .logo {
+  font-family: Open Sans,Arial,Helvetica Neue,helvetica,sans-serif;
+  font-size: 24px;
+}
+
+#ilabels tr {
+  background-color: #222d32;
+}
+
+#ilabels td {
+  word-break: break-all;
+}
+
+.main-sidebar .datatables .dataTables_wrapper .dataTables_paginate .paginate_button,
+.main-sidebar .datatables .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.main-sidebar .datatables .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, 
+.main-sidebar .datatables .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+  color: #ffffff !important;
+}
+
+/*
+.skin-blue .main-header .logo {
+    background-color: #fff;
+    color: #000;
+    border-bottom: 0 solid transparent;
+}
+
+.skin-blue .main-header .logo:hover {
+    background-color: #fff;
+}
+*/
