@@ -1,4 +1,3 @@
-
 library(shiny)
 require(httr)
 library(ggplot2)
@@ -201,12 +200,13 @@ shinyServer(function(input, output, session) {
   #address_data<- reactive({
     #input$xclust
     #if (isManager()){
-      #query_join_temp <- paste0("
-       #                       SELECT t1.UT, t1.Country_name,t1.City,t1.Unified_org_id,t1.Org_divided,t1.Name_eng,t1.Org_type_code
-        #                     FROM v_BestResAddr as t1
-         #                   INNER JOIN ##selected_uts as t2 on (t1.UT = t2.ut)")
+    query_join_temp <- paste0("
+                             SELECT t1.UT, t1.Country_name,t1.City,t1.Unified_org_id,t1.Org_divided,t1.Name_eng,t1.Org_type_code
+                             FROM v_BestResAddr as t1
+                            INNER JOIN ##selected_uts as t2 on (t1.UT = t2.ut)")
     
-    query_join_temp <- paste0("exec selected_uts '", input$clusterlevels , "' ,'" , as.numeric(levels_clu()[levels_clu()$label == ilabels_pre()[rownames(ilabels_pre())[input$ilabels_rows_selected],1],][1]) , "' ,'" , as.numeric(input$starty) , "'")
+    query_join_temp <- paste0("exec get_addresses '", input$clusterlevels , "' ,'" , as.numeric(levels_clu()[levels_clu()$label == ilabels_pre()[rownames(ilabels_pre())[input$ilabels_rows_selected],1],][1]) , "' ,'" , as.numeric(input$starty) , "'")
+    print(query_join_temp)
     #} else{
       # query_join_temp <- paste0("
       #                         SELECT 't1.Uz', 't1.Country_name','t1.City','t1.Unified_org_id','t1.Org_divided','t1.Name_eng','t1.Org_type_code'
@@ -214,6 +214,7 @@ shinyServer(function(input, output, session) {
     #}
     print("addresses_sql start")
     print(Sys.time())
+    #addresses_sql<- dbGetQuery(bibmet_handle_odbc,query_join_temp)
     addresses_sql<- dbGetQuery(bibclust_handle_odbc,query_join_temp)
     print("addresses_sql end")
     print(Sys.time())
@@ -294,6 +295,7 @@ shinyServer(function(input, output, session) {
                             Inner join Author as t3 on (t1.Author_id = t3.Author_id)")
     
     authorinfo<- dbGetQuery(bibmet_handle_odbc,query_authors)
+    #authorinfo<- dbGetQuery(bibclust_handle_odbc,query_authors)
     #pre-processing
     print("author_data")
     #authorinfo$Country_name<- iconv(authorinfo$Country_name, from="latin1", to='UTF-8')	# Fix encoding issue with e.g. Côte d'ivoire
@@ -318,7 +320,9 @@ shinyServer(function(input, output, session) {
                             INNER JOIN v_BestResAddrAuthorid as t1 on (t1.UT = t2.ut)
                             Inner join Author as t3 on (t1.Author_id = t3.Author_id)")
     
-    authorcount<- dbGetQuery(bibmet_handle_odbc,query_authors_test)
+    query_authors_test <- paste0("exec get_authors '", input$clusterlevels , "' ,'" , as.numeric(levels_clu()[levels_clu()$label == ilabels_pre()[rownames(ilabels_pre())[input$ilabels_rows_selected],1],][1]) , "' ,'" , as.numeric(input$starty) , "'")
+    authorcount<- dbGetQuery(bibclust_handle_odbc,query_authors_test)
+    #authorcount<- dbGetQuery(bibmet_handle_odbc,query_authors_test)
     #pre-processing
     #print(authorcount)
     #authorcount$Country_name<- iconv(authorcount$Country_name, from="latin1", to='UTF-8')	# Fix encoding issue with e.g. Côte d'ivoire
